@@ -1,0 +1,22 @@
+{
+    "name": "joeltiago00/clean-architecture",
+    "description": "Practical study on clean architecture with PHP",
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/Application",
+            "Infrastructure\\": "src/Infrastructure"
+        },
+        "files": [
+            "src/utils/config.php",
+            "src/utils/dd.php"
+        ]
+    },
+    "authors": [
+        {
+            "name": "alvez2g"
+        }
+    ],
+    "require": {
+      "ext-pdo": "*"
+    }
+}
