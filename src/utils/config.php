@@ -5,11 +5,9 @@ if (!function_exists('config')) {
     {
         $keys = explode('.', $key);
 
-
         $dir = __DIR__;
 
-        $dir = str_replace(DIRECTORY_SEPARATOR . 'Helpers', '', $dir);
-
+        $dir = str_replace(DIRECTORY_SEPARATOR . 'utils', '', $dir);
 
         $file = require_once sprintf(
             '%s%sConfig%s%s.php',
