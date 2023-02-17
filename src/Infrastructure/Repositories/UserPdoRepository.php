@@ -14,7 +14,7 @@ class UserPdoRepository implements UserRepository
         $this->model = new User();
     }
 
-    public function create(array $data): int
+    public function create(array $data): array
     {
         return $this->model->create($data);
     }

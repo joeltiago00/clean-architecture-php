@@ -1,6 +1,6 @@
 <?php
 
-namespace Infrastructure\Models\Chain;
+namespace Infrastructure\Chain;
 
 class Chain
 {

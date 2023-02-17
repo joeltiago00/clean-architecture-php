@@ -4,6 +4,8 @@ namespace Infrastructure\Models;
 
 use Infrastructure\Database\ConnectionResolver;
 use Infrastructure\Models\Enums\TypeQueryEnum;
+use Infrastructure\Models\QueryHandlers\Handlers\Insert;
+use Infrastructure\Models\QueryHandlers\Handlers\Select;
 use Infrastructure\Models\Replacers\QueryReplacer;
 use Infrastructure\Models\Traits\Builder;
 use PDO;
@@ -13,62 +15,32 @@ abstract class Model
 {
     use Builder;
 
+    protected array $params = [];
+    protected string $select = '*';
     protected string $conditions = '';
-
     protected string $table = '';
     private PDO $connection;
     private QueryReplacer $replacer;
+    private Insert $insertHandler;
+    private Select $selectHandler;
 
     public function __construct()
     {
         $this->connection = ConnectionResolver::handle();
         $this->replacer = new QueryReplacer();
+        $this->insertHandler = new Insert();
+        $this->selectHandler = new Select();
     }
 
-    public function create(array $data): int
+    public function create(array $data): array
     {
-        $valuesAsArrayForReplace = $this->prepareArrayValuesForReplace($data);
+        $query = $this->insertHandler->handle($this->table, $data);
 
-        $valuesAsStringForReplace = $this->arrayValuesForReplaceAsString($valuesAsArrayForReplace);
+        $stmt = $this->connection->prepare($query->text);
 
-        $stmt = $this->connection->prepare(
-            $this->prepareQuery(
-                TypeQueryEnum::INSERT,
-                $this->prepareColumns($data),
-                $valuesAsStringForReplace,
-            )
-        );
+        $stmt->execute($query->data);
 
-        $toDatabase = array_combine($valuesAsArrayForReplace, array_values($data));
-
-        $stmt->execute($toDatabase);
-
-        return $this->connection->lastInsertId();
-    }
-
-    private function prepareColumns(array $data): string
-    {
-        return implode(', ', array_keys($data));
-    }
-
-    private function prepareArrayValuesForReplace(array $data): array
-    {
-        return array_map(fn($key) => sprintf(':%s', $key), array_keys($data));
-    }
-
-    private function arrayValuesForReplaceAsString(array $values): string
-    {
-        return implode(', ', $values);
-    }
-
-    public function prepareQuery(TypeQueryEnum $queryEnum, string $columns, string $valuesAsStringForReplace): string
-    {
-        return $this->replacer->handle([
-            'query' => $queryEnum->text(),
-            'table' => $this->table,
-            'columns' => $columns,
-            'values' => $valuesAsStringForReplace
-        ]);
+        return $this->find($this->connection->lastInsertId());
     }
 
     private function prepareModels(PDOStatement $stmt): array
@@ -85,14 +57,22 @@ abstract class Model
 
     public function find(int $id): array
     {
-        $stmt = $this->connection->prepare(
-            $this->replacer->handle([
-                'query' => TypeQueryEnum::SELECT->text(),
-                'columns' => '*',
-                'table' => $this->table,
-                'conditions' => $this->where('id', '=', $id)->conditions
-            ])
-        );
+        $this->where('id', '=', $id);
+
+        $query = $this->selectHandler->handle($this->table, [],$this->conditions, $this->select);
+
+        $stmt = $this->connection->prepare($query->text);
+
+        $stmt->execute($query->data);
+
+        return $this->prepareModels($stmt);
+    }
+
+    public function get(): array
+    {
+        $query = $this->selectHandler->handle($this->table, [],$this->conditions, $this->select);
+
+        $stmt = $this->connection->prepare($query->text);
 
         $stmt->execute();
 

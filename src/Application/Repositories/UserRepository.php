@@ -7,5 +7,5 @@ use App\Models\User;
 
 interface UserRepository
 {
-    public function create(array $data): int;
+    public function create(array $data): array;
 }

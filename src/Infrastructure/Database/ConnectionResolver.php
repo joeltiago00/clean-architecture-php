@@ -13,7 +13,7 @@ class ConnectionResolver
      */
     public static function handle(): PDO
     {
-        return match (config('app.database.connection')) {
+        return match ('sqlite') {
             'sqlite' => SQLiteFactory::create(),
             default => throw new Exception('PDO not configured for this database.')
         };

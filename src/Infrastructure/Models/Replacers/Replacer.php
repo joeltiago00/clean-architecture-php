@@ -2,7 +2,7 @@
 
 namespace Infrastructure\Models\Replacers;
 
-use Infrastructure\Models\Chain\Chain;
+use Infrastructure\Chain\Chain;
 
 abstract class Replacer
 {

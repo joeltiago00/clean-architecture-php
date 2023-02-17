@@ -14,10 +14,18 @@ trait Builder
             $this->conditions .= "where $column $operator $value";
 
             $this->firstTimeWhere = false;
+
+            return $this;
         }
-        else {
-            $this->conditions .= " and $column $operator $value";
-        }
+
+        $this->conditions .= " and $column $operator $value";
+
+        return $this;
+    }
+
+    public function select(string $select): self
+    {
+        $this->select = $select;
 
         return $this;
     }

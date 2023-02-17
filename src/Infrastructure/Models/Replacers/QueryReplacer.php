@@ -4,6 +4,7 @@ namespace Infrastructure\Models\Replacers;
 
 use Infrastructure\Models\Replacers\Replaces\ReplaceColumns;
 use Infrastructure\Models\Replacers\Replaces\ReplaceConditions;
+use Infrastructure\Models\Replacers\Replaces\ReplaceSelect;
 use Infrastructure\Models\Replacers\Replaces\ReplaceTable;
 use Infrastructure\Models\Replacers\Replaces\ReplaceValues;
 
@@ -17,9 +18,10 @@ class QueryReplacer extends Replacer
                 ReplaceTable::class,
                 ReplaceColumns::class,
                 ReplaceValues::class,
-                ReplaceConditions::class
+                ReplaceConditions::class,
+                ReplaceSelect::class
             ])
-        ->send();
+            ->send();
 
         return $result['query'];
     }
