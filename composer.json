@@ -8,7 +8,8 @@
         },
         "files": [
             "src/utils/config.php",
-            "src/utils/dd.php"
+            "src/utils/dd.php",
+            "src/utils/singleton.php"
         ]
     },
     "authors": [

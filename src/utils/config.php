@@ -1,10 +1,13 @@
 <?php
 
 if (!function_exists('config')) {
+
     function config(string $key): mixed
     {
-        $keys = explode('.', $key);
+        $v =1;
+        if ($v == 2) dd($key);
 
+        $keys = explode('.', $key);
         $dir = __DIR__;
 
         $dir = str_replace(DIRECTORY_SEPARATOR . 'utils', '', $dir);
@@ -29,7 +32,7 @@ if (!function_exists('config')) {
 
             $finalKey = $currentArray[$key];
         }
-
+$v++;
         return $finalKey ?? null;
     }
 }

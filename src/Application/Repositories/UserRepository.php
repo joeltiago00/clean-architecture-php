@@ -1,8 +1,11 @@
 <?php
 
-namespace Repositories;
+namespace App\Repositories;
 
-class UserRepository
+
+use App\Models\User;
+
+interface UserRepository
 {
-
+    public function create(array $data): int;
 }
