@@ -6,6 +6,7 @@ use Infrastructure\Models\Replacers\Replaces\ReplaceColumns;
 use Infrastructure\Models\Replacers\Replaces\ReplaceConditions;
 use Infrastructure\Models\Replacers\Replaces\ReplaceSelect;
 use Infrastructure\Models\Replacers\Replaces\ReplaceTable;
+use Infrastructure\Models\Replacers\Replaces\ReplaceUpdates;
 use Infrastructure\Models\Replacers\Replaces\ReplaceValues;
 
 class QueryReplacer extends Replacer
@@ -19,7 +20,8 @@ class QueryReplacer extends Replacer
                 ReplaceColumns::class,
                 ReplaceValues::class,
                 ReplaceConditions::class,
-                ReplaceSelect::class
+                ReplaceSelect::class,
+                ReplaceUpdates::class
             ])
             ->send();
 

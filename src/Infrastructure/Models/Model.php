@@ -6,6 +6,7 @@ use Infrastructure\Database\ConnectionResolver;
 use Infrastructure\Models\Enums\TypeQueryEnum;
 use Infrastructure\Models\QueryHandlers\Handlers\Insert;
 use Infrastructure\Models\QueryHandlers\Handlers\Select;
+use Infrastructure\Models\QueryHandlers\Handlers\Update;
 use Infrastructure\Models\Replacers\QueryReplacer;
 use Infrastructure\Models\Traits\Builder;
 use PDO;
@@ -20,16 +21,16 @@ abstract class Model
     protected string $conditions = '';
     protected string $table = '';
     private PDO $connection;
-    private QueryReplacer $replacer;
     private Insert $insertHandler;
     private Select $selectHandler;
+    private Update $updateHandler;
 
     public function __construct()
     {
         $this->connection = ConnectionResolver::handle();
-        $this->replacer = new QueryReplacer();
         $this->insertHandler = new Insert();
         $this->selectHandler = new Select();
+        $this->updateHandler = new Update();
     }
 
     public function create(array $data): array
@@ -77,5 +78,14 @@ abstract class Model
         $stmt->execute();
 
         return $this->prepareModels($stmt);
+    }
+
+    public function update(array $data): bool
+    {
+        $query = $this->updateHandler->handle($this->table, $data, $this->conditions);
+
+        $stmt = $this->connection->prepare($query->text);
+
+        return $stmt->execute($query->data);
     }
 }
