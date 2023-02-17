@@ -2,6 +2,6 @@
 
 return [
     'database' => [
-        'connection' => 'sqlite'
+        'connection' => getenv('DB_CONNECTION') ?? 'sqlite'
     ]
 ];

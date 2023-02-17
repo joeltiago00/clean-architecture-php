@@ -16,16 +16,13 @@ abstract class Model
     protected string $conditions = '';
 
     protected string $table = '';
+    private PDO $connection;
     private QueryReplacer $replacer;
 
     public function __construct()
     {
+        $this->connection = ConnectionResolver::handle();
         $this->replacer = new QueryReplacer();
-    }
-
-    private function getConnection(): PDO
-    {
-        return ConnectionResolver::handle();
     }
 
     public function create(array $data): int
@@ -34,9 +31,7 @@ abstract class Model
 
         $valuesAsStringForReplace = $this->arrayValuesForReplaceAsString($valuesAsArrayForReplace);
 
-        $connection = $this->getConnection();
-
-        $stmt = $connection->prepare(
+        $stmt = $this->connection->prepare(
             $this->prepareQuery(
                 TypeQueryEnum::INSERT,
                 $this->prepareColumns($data),
@@ -48,7 +43,7 @@ abstract class Model
 
         $stmt->execute($toDatabase);
 
-        return $connection->lastInsertId();
+        return $this->connection->lastInsertId();
     }
 
     private function prepareColumns(array $data): string
@@ -88,15 +83,9 @@ abstract class Model
         return $list;
     }
 
-    private function getModelPath(array $data): string
-    {
-        return $data[0]['object']::class ?? throw new \Exception('Invalid model.');
-    }
-
     public function find(int $id): array
     {
-        $connection = $this->getConnection();
-        $stmt = $connection->prepare(
+        $stmt = $this->connection->prepare(
             $this->replacer->handle([
                 'query' => TypeQueryEnum::SELECT->text(),
                 'columns' => '*',
@@ -108,10 +97,5 @@ abstract class Model
         $stmt->execute();
 
         return $this->prepareModels($stmt);
-    }
-
-    public function __get(string $name)
-    {
-        // TODO: Implement __get() method.
     }
 }
