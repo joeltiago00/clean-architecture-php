@@ -3,11 +3,10 @@
 namespace Infrastructure\Models;
 
 use Infrastructure\Database\ConnectionResolver;
-use Infrastructure\Models\Enums\TypeQueryEnum;
+use Infrastructure\Models\QueryHandlers\Handlers\Delete;
 use Infrastructure\Models\QueryHandlers\Handlers\Insert;
 use Infrastructure\Models\QueryHandlers\Handlers\Select;
 use Infrastructure\Models\QueryHandlers\Handlers\Update;
-use Infrastructure\Models\Replacers\QueryReplacer;
 use Infrastructure\Models\Traits\Builder;
 use PDO;
 use PDOStatement;
@@ -16,7 +15,6 @@ abstract class Model
 {
     use Builder;
 
-    protected array $params = [];
     protected string $select = '*';
     protected string $conditions = '';
     protected string $table = '';
@@ -24,6 +22,7 @@ abstract class Model
     private Insert $insertHandler;
     private Select $selectHandler;
     private Update $updateHandler;
+    private Delete $deleteHandler;
 
     public function __construct()
     {
@@ -31,6 +30,7 @@ abstract class Model
         $this->insertHandler = new Insert();
         $this->selectHandler = new Select();
         $this->updateHandler = new Update();
+        $this->deleteHandler = new Delete();
     }
 
     public function create(array $data): array
@@ -87,5 +87,14 @@ abstract class Model
         $stmt = $this->connection->prepare($query->text);
 
         return $stmt->execute($query->data);
+    }
+
+    public function delete(): bool
+    {
+        $query = $this->deleteHandler->handle($this->table, [],$this->conditions, $this->select);
+//dd($query);
+        $stmt = $this->connection->prepare($query->text);
+
+        return $stmt->execute();
     }
 }
