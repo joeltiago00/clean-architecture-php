@@ -2,15 +2,18 @@
 
 namespace Infrastructure\Models\QueryHandlers;
 
-use Infrastructure\Models\Enums\TypeQueryEnum;
-use Infrastructure\Models\Replacers\Replacer;
+use Infrastructure\Models\QueryHandlers\Contracts\Query as QueryInterface;
+use Infrastructure\Models\QueryHandlers\Handlers\Handler;
 
-abstract class Query
+class QueryHandler implements QueryInterface
 {
-    protected TypeQueryEnum $queryEnum;
-    protected Replacer $replacer;
-
-    public function handle(string $table, array $data, string $conditions = '',  string $select = ''): QueryDTO
+    public function handle(
+        Handler $handler,
+        string  $table,
+        array   $data,
+        string  $conditions = '',
+        string  $select = ''
+    ): QueryDTO
     {
         $columnsAsArray = $this->columnsAsArray($data);
         $columnsAsString = $this->columnsAsString($columnsAsArray);
@@ -20,8 +23,8 @@ abstract class Query
 
         $updates = $this->getUpdates($columnsAsArray, $valueAsArray);
 
-        $query = $this->replacer->handle([
-            'query' => $this->queryEnum->text(),
+        $query = $handler->replacer->handle([
+            'query' => $handler->queryEnum->text(),
             'table' => $table,
             'columns' => $columnsAsString,
             'values' => $valueAsString,
@@ -33,32 +36,32 @@ abstract class Query
         return new QueryDTO($query, $this->getData($valueAsArray, $data));
     }
 
-    protected function columnsAsString(array $data): string
+    private function columnsAsString(array $data): string
     {
         return implode(', ', $data) ?? '';
     }
 
-    protected function prepareValuesAsArrayForReplace(array $data): array
+    private function prepareValuesAsArrayForReplace(array $data): array
     {
         return array_map(fn($key) => sprintf(':%s', $key), $this->columnsAsArray($data)) ?? [];
     }
 
-    protected function arrayValuesAsStringForReplace(array $values): string
+    private function arrayValuesAsStringForReplace(array $values): string
     {
         return implode(', ', $values) ?? '';
     }
 
-    protected function getData(array $valueAsArray, array $data): array
+    private function getData(array $valueAsArray, array $data): array
     {
         return array_combine($valueAsArray, array_values($data));
     }
 
-    public function columnsAsArray(array $data): array
+    private function columnsAsArray(array $data): array
     {
         return array_keys($data) ?? [];
     }
 
-    public function getUpdates(array $columnsAsArray, array $valueAsArray): string
+    private function getUpdates(array $columnsAsArray, array $valueAsArray): string
     {
         $set = '';
 

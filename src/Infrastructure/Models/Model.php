@@ -7,6 +7,7 @@ use Infrastructure\Models\QueryHandlers\Handlers\Delete;
 use Infrastructure\Models\QueryHandlers\Handlers\Insert;
 use Infrastructure\Models\QueryHandlers\Handlers\Select;
 use Infrastructure\Models\QueryHandlers\Handlers\Update;
+use Infrastructure\Models\QueryHandlers\QueryHandler;
 use Infrastructure\Models\Traits\Builder;
 use PDO;
 use PDOStatement;
@@ -19,23 +20,17 @@ abstract class Model
     protected string $conditions = '';
     protected string $table = '';
     private PDO $connection;
-    private Insert $insertHandler;
-    private Select $selectHandler;
-    private Update $updateHandler;
-    private Delete $deleteHandler;
+    private QueryHandler $queryHandler;
 
     public function __construct()
     {
         $this->connection = ConnectionResolver::handle();
-        $this->insertHandler = new Insert();
-        $this->selectHandler = new Select();
-        $this->updateHandler = new Update();
-        $this->deleteHandler = new Delete();
+        $this->queryHandler = new QueryHandler();
     }
 
     public function create(array $data): array
     {
-        $query = $this->insertHandler->handle($this->table, $data);
+        $query = $this->queryHandler->handle(singleton(Insert::class), $this->table, $data);
 
         $stmt = $this->connection->prepare($query->text);
 
@@ -47,6 +42,7 @@ abstract class Model
     private function prepareModels(PDOStatement $stmt): array
     {
         $list = [];
+
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
 
         while ($result = $stmt->fetch()) {
@@ -60,7 +56,13 @@ abstract class Model
     {
         $this->where('id', '=', $id);
 
-        $query = $this->selectHandler->handle($this->table, [],$this->conditions, $this->select);
+        $query = $this->queryHandler->handle(
+            singleton(Select::class),
+            $this->table,
+            [],
+            $this->conditions,
+            $this->select
+        );
 
         $stmt = $this->connection->prepare($query->text);
 
@@ -71,7 +73,13 @@ abstract class Model
 
     public function get(): array
     {
-        $query = $this->selectHandler->handle($this->table, [],$this->conditions, $this->select);
+        $query = $this->queryHandler->handle(
+            singleton(Select::class),
+            $this->table,
+            [],
+            $this->conditions,
+            $this->select
+        );
 
         $stmt = $this->connection->prepare($query->text);
 
@@ -82,7 +90,7 @@ abstract class Model
 
     public function update(array $data): bool
     {
-        $query = $this->updateHandler->handle($this->table, $data, $this->conditions);
+        $query = $this->queryHandler->handle(singleton(Update::class), $this->table, $data, $this->conditions);
 
         $stmt = $this->connection->prepare($query->text);
 
@@ -91,8 +99,14 @@ abstract class Model
 
     public function delete(): bool
     {
-        $query = $this->deleteHandler->handle($this->table, [],$this->conditions, $this->select);
-//dd($query);
+        $query = $this->queryHandler->handle(
+            singleton(Delete::class),
+            $this->table,
+            [],
+            $this->conditions,
+            $this->select
+        );
+
         $stmt = $this->connection->prepare($query->text);
 
         return $stmt->execute();

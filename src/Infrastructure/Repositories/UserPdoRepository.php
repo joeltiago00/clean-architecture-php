@@ -19,7 +19,7 @@ class UserPdoRepository implements UserRepository
         return $this->model->create($data);
     }
 
-    public function find(int $id)
+    public function find(int $id): array
     {
         return $this->model->find($id);
     }
