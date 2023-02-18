@@ -1,6 +1,6 @@
 <?php
 
-namespace Infrastructure\Models\Enums;
+namespace Drivers\Database\SQLite\Enums;
 
 enum TypeQueryEnum
 {

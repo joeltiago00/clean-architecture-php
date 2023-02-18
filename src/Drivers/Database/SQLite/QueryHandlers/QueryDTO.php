@@ -1,6 +1,6 @@
 <?php
 
-namespace Infrastructure\Models\QueryHandlers;
+namespace Drivers\Database\SQLite\QueryHandlers;
 
 class QueryDTO
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Infrastructure\Models\Traits;
+namespace Drivers\Database\SQLite\Traits;
 
 trait Builder
 {

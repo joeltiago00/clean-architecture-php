@@ -1,6 +1,6 @@
 <?php
 
-namespace Infrastructure\Models\Replacers;
+namespace Drivers\Database\SQLite\Replacers;
 
 use Infrastructure\Chain\Chain;
 

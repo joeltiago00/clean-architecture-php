@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Infrastructure\Models\Model;
+use Infrastructure\Models\SQLite\Model;
 
 class User extends Model
 {

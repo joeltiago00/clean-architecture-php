@@ -1,14 +1,14 @@
 <?php
 
-namespace Infrastructure\Models;
+namespace Infrastructure\Models\SQLite;
 
+use Drivers\Database\SQLite\QueryHandlers\Handlers\Delete;
+use Drivers\Database\SQLite\QueryHandlers\Handlers\Insert;
+use Drivers\Database\SQLite\QueryHandlers\Handlers\Select;
+use Drivers\Database\SQLite\QueryHandlers\Handlers\Update;
+use Drivers\Database\SQLite\QueryHandlers\QueryHandler;
+use Drivers\Database\SQLite\Traits\Builder;
 use Infrastructure\Database\ConnectionResolver;
-use Infrastructure\Models\QueryHandlers\Handlers\Delete;
-use Infrastructure\Models\QueryHandlers\Handlers\Insert;
-use Infrastructure\Models\QueryHandlers\Handlers\Select;
-use Infrastructure\Models\QueryHandlers\Handlers\Update;
-use Infrastructure\Models\QueryHandlers\QueryHandler;
-use Infrastructure\Models\Traits\Builder;
 use PDO;
 use PDOStatement;
 

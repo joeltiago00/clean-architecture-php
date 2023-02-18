@@ -1,9 +1,9 @@
 <?php
 
-namespace Infrastructure\Models\QueryHandlers;
+namespace Drivers\Database\SQLite\QueryHandlers;
 
-use Infrastructure\Models\QueryHandlers\Contracts\Query as QueryInterface;
-use Infrastructure\Models\QueryHandlers\Handlers\Handler;
+use Drivers\Database\SQLite\QueryHandlers\Contracts\Query as QueryInterface;
+use Drivers\Database\SQLite\QueryHandlers\Handlers\Handler;
 
 class QueryHandler implements QueryInterface
 {

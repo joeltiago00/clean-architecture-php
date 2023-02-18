@@ -1,6 +1,6 @@
 <?php
 
-namespace Infrastructure\Models\Replacers\Contracts;
+namespace Drivers\Database\SQLite\Replacers\Contracts;
 
 interface Replace
 {

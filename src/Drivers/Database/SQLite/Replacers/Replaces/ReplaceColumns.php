@@ -1,8 +1,9 @@
 <?php
 
-namespace Infrastructure\Models\Replacers\Replaces;
+namespace Drivers\Database\SQLite\Replacers\Replaces;
 
-use Infrastructure\Models\Replacers\Contracts\Replace;
+use Drivers\Database\SQLite\Replacers\Contracts\Replace;
+use function Infrastructure\Models\Replacers\Replaces\str_contains;
 
 class ReplaceColumns implements Replace
 {

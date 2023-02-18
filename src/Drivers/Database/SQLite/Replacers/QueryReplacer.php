@@ -1,13 +1,13 @@
 <?php
 
-namespace Infrastructure\Models\Replacers;
+namespace Drivers\Database\SQLite\Replacers;
 
-use Infrastructure\Models\Replacers\Replaces\ReplaceColumns;
-use Infrastructure\Models\Replacers\Replaces\ReplaceConditions;
-use Infrastructure\Models\Replacers\Replaces\ReplaceSelect;
-use Infrastructure\Models\Replacers\Replaces\ReplaceTable;
-use Infrastructure\Models\Replacers\Replaces\ReplaceUpdates;
-use Infrastructure\Models\Replacers\Replaces\ReplaceValues;
+use Drivers\Database\SQLite\Replacers\Replaces\ReplaceColumns;
+use Drivers\Database\SQLite\Replacers\Replaces\ReplaceConditions;
+use Drivers\Database\SQLite\Replacers\Replaces\ReplaceSelect;
+use Drivers\Database\SQLite\Replacers\Replaces\ReplaceTable;
+use Drivers\Database\SQLite\Replacers\Replaces\ReplaceUpdates;
+use Drivers\Database\SQLite\Replacers\Replaces\ReplaceValues;
 
 class QueryReplacer extends Replacer
 {
