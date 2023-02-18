@@ -2,7 +2,7 @@
 
 namespace Drivers\Database\SQLite\Replacers\Replaces;
 
-use Drivers\Database\SQLite\Replacers\Contracts\Replace;
+use Drivers\Database\SQLite\Contracts\Replace;
 use function Infrastructure\Models\Replacers\Replaces\str_contains;
 
 class ReplaceValues implements Replace

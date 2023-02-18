@@ -1,7 +1,8 @@
 <?php
 
-namespace Infrastructure\Models\SQLite;
+namespace Drivers\Database\SQLite;
 
+use Drivers\Database\SQLite\Contracts\Model as ModelInterface;
 use Drivers\Database\SQLite\QueryHandlers\Handlers\Delete;
 use Drivers\Database\SQLite\QueryHandlers\Handlers\Insert;
 use Drivers\Database\SQLite\QueryHandlers\Handlers\Select;
@@ -12,7 +13,7 @@ use Infrastructure\Database\ConnectionResolver;
 use PDO;
 use PDOStatement;
 
-abstract class Model
+abstract class Model implements ModelInterface
 {
     use Builder;
 

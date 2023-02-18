@@ -2,7 +2,7 @@
 
 namespace Drivers\Database\SQLite\QueryHandlers;
 
-use Drivers\Database\SQLite\QueryHandlers\Contracts\Query as QueryInterface;
+use Drivers\Database\SQLite\Contracts\Query as QueryInterface;
 use Drivers\Database\SQLite\QueryHandlers\Handlers\Handler;
 
 class QueryHandler implements QueryInterface

@@ -1,6 +1,6 @@
 <?php
 
-namespace Drivers\Database\SQLite\QueryHandlers\Contracts;
+namespace Drivers\Database\SQLite\Contracts;
 
 use Drivers\Database\SQLite\QueryHandlers\Handlers\Handler;
 use Drivers\Database\SQLite\QueryHandlers\QueryDTO;
