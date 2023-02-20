@@ -6,17 +6,18 @@ use App\Exceptions\Validation\User\EmailAlreadyInUseException;
 use App\Exceptions\Validation\User\InvalidEmailException;
 use App\Exceptions\Validation\User\InvalidLastNameException;
 use App\Exceptions\Validation\User\InvalidNameException;
+use App\Exceptions\Validation\ValidationException;
 use App\Repositories\UserRepository;
-use Exception;
 
 class UserStoreValidator
 {
+    //this is a temporary solution
     public function __construct(private readonly UserRepository $userRepository)
     {
     }
 
     /**
-     * @throws Exception
+     * @throws ValidationException
      */
     public function validate(array $payload): void
     {
