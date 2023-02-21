@@ -8,22 +8,27 @@ use PDOException;
 
 abstract class ConnectionFactory implements ConnectionFactoryInterface
 {
-    protected static string $type = '';
-    protected static string $host = '';
-    protected static string $database = '';
-    protected static string $user = '';
-    protected static string $password = '';
+    protected string $type = '';
+    protected string $host = '';
+    protected string $database = '';
+    protected string $user = '';
+    protected string $password = '';
 
-    public static function create(): PDO
+    public function create(): PDO
     {
         try {
-            return new PDO(
-                sprintf('%s:host=%s;dbname=%s', self::$type, self::$host, self::$database),
-                self::$user,
-                self::$password)
-                ;
+            $connection = new PDO(
+                sprintf('%s:host=%s;dbname=%s', $this->type, $this->host, $this->database),
+                $this->user,
+                $this->password);
+
+            $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $connection->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
         } catch (PDOException $exception) {
             echo sprintf('PDO error: %s', $exception->getMessage());
+            exit();
         }
+
+        return $connection;
     }
 }

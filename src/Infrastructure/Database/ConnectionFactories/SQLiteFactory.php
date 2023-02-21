@@ -7,14 +7,14 @@ use PDOException;
 
 class SQLiteFactory extends ConnectionFactory
 {
-    protected static string $type = 'sqlite';
+    protected string $type = 'sqlite';
 
-    public static function create(): PDO
+    public function create(): PDO
     {
         $databasePath = sprintf('%s/../../../../database.sqlite', __DIR__);
 
         try {
-            $connection = singleton(PDO::class, sprintf('sqlite:%s', $databasePath));
+            $connection = singleton(PDO::class, sprintf('%s:%s', $this->type, $databasePath));
 
             $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $connection->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);

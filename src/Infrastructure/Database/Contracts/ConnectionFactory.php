@@ -6,5 +6,5 @@ use PDO;
 
 interface ConnectionFactory
 {
-    public static function create(): PDO;
+    public function create(): PDO;
 }

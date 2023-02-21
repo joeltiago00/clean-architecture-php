@@ -8,7 +8,8 @@ use Interfaces\Http\Controllers\UserStoreController;
 require '../vendor/autoload.php';
 require '../src/public/index.php';
 
-$repository = new UserPdoRepository();
+
+$repository = new UserPdoRepository(new \App\Models\User());
 $action = new UserStore($repository);
 $validator = new UserStoreValidator($repository);
 
