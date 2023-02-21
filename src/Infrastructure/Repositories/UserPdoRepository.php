@@ -7,11 +7,8 @@ use App\Repositories\UserRepository;
 
 class UserPdoRepository implements UserRepository
 {
-    private User $model;
-
-    public function __construct()
+    public function __construct(private readonly User $model)
     {
-        $this->model = new User();
     }
 
     public function create(\Domain\User\User $user): array
