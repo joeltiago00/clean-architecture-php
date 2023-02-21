@@ -44,8 +44,6 @@ abstract class Model implements ModelInterface
     {
         $list = [];
 
-        $stmt->setFetchMode(PDO::FETCH_ASSOC);
-
         while ($result = $stmt->fetch()) {
             $list[] = $result;
         }
